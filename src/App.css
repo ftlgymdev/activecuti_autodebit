@@ -17,7 +17,9 @@
   --solid-blue: #3b82f6;
 } */
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   min-height: 100vh;
   background: transparent;
@@ -26,7 +28,7 @@ html, body, #root {
 /* --- ActivatePages Styles --- */
 .activate-bg {
   min-height: 100vh;
-  background-image: url('/images/background.png');
+  background-image: url("/images/background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -39,9 +41,9 @@ html, body, #root {
   max-width: 900px;
   margin: 0 auto;
   background: var(--neutral-black);
-  border-radius:0 ;
+  border-radius: 0;
   padding: 40px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.3);
 }
 
 .activate-header h2 {
@@ -104,6 +106,29 @@ html, body, #root {
 .activate-input-icon input {
   width: 100%;
   padding: 12px 12px 12px 40px;
+  border-radius: 8px;
+  border: none;
+  background: #18181b;
+  color: var(--neutral-white);
+  font-size: 16px;
+}
+
+.activate-input-icon-date {
+  position: relative;
+  border-radius: 8px;
+}
+
+.activate-input-icon-date span {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  color: var(--neutral-gray);
+  font-size: 16px;
+}
+
+.activate-input-icon-date input {
+  width: 100%;
+  padding: 12px 12px 12px 12px;
   border-radius: 8px;
   border: none;
   background: #18181b;
@@ -179,7 +204,7 @@ html, body, #root {
   margin-bottom: 0;
 }
 
-.activate-info-box span:last-child ul, 
+.activate-info-box span:last-child ul,
 .activate-info-box span:last-child ol {
   margin: 8px 0;
   padding-left: 20px;
@@ -276,7 +301,8 @@ html, body, #root {
     font-size: 1rem;
     padding: 10px 0;
   }
-  .activate-form-section, .activate-info-section {
+  .activate-form-section,
+  .activate-info-section {
     min-width: 0;
   }
 }
@@ -469,6 +495,29 @@ html, body, #root {
   opacity: 0.7;
 }
 
+.activate-input-icon-date input.error {
+  border: 1px solid #ef4444;
+  background: #1f1f23;
+}
+
+.activate-input-icon-date input.error:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+/* Additional styles for better consistency */
+.activate-input-icon-date input:focus {
+  outline: none;
+  border: 1px solid var(--solid-blue);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.activate-input-icon-date input::placeholder {
+  color: #666;
+  opacity: 0.7;
+}
+
 /* Loading states */
 .loading-spinner {
   display: inline-block;
@@ -481,7 +530,9 @@ html, body, #root {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Disabled states */
@@ -676,21 +727,21 @@ html, body, #root {
   .modal-overlay {
     padding: 16px;
   }
-  
+
   .modal-content {
     max-width: 100%;
   }
-  
+
   .modal-header,
   .modal-body,
   .modal-footer {
     padding: 16px;
   }
-  
+
   .modal-footer {
     flex-direction: column;
   }
-  
+
   .modal-btn {
     width: 100%;
   }
@@ -705,17 +756,17 @@ html, body, #root {
   color: var(--neutral-gray);
   font-size: 14px;
   margin-top: 8px;
-  padding-left: 40px;
+  padding-left: 12px;
 }
 
 /* Date input specific styles */
-.activate-input-icon input[type="date"] {
+.activate-input-icon-date input[type="date"] {
   position: relative;
   padding-right: 40px;
   cursor: pointer;
 }
 
-.activate-input-icon input[type="date"]::-webkit-calendar-picker-indicator {
+.activate-input-icon-date input[type="date"]::-webkit-calendar-picker-indicator {
   position: absolute;
   right: 8px;
   top: 50%;
@@ -730,58 +781,65 @@ html, body, #root {
   transition: opacity 0.2s;
 }
 
-.activate-input-icon input[type="date"]::-webkit-calendar-picker-indicator:hover {
+.activate-input-icon-date
+  input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 0.8;
 }
-/* Info Popover Styles */
-.info-popover-container {
-  position: relative;
-  display: inline-block;
-  align-items: center;
-  justify-content: center;
+/* Bootstrap Popover Custom Styling */
+.popover {
+  background: rgba(40, 40, 40, 0.95) !important;
+  backdrop-filter: blur(5px) !important;
+  border: 1px solid #4a4a4a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  color: #e5e7eb !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  max-width: 280px !important;
+  font-style: italic !important;
 }
 
-.info-button {
-  background: none;
-  border: none;
-  padding: 0;
-  color: var(--neutral-gray);
+.popover .popover-header {
+  background: rgba(40, 40, 40, 0.95) !important;
+  border-bottom: 1px solid #4a4a4a !important;
+  color: #e5e7eb !important;
+  font-weight: 600 !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.popover .popover-body {
+  color: #e5e7eb !important;
+  padding: 12px 16px !important;
+}
+
+.popover .popover-arrow::before {
+  border-color: var(--neutral-black) !important;
+}
+
+.popover.bs-popover-top .popover-arrow::before {
+  border-top-color: var(--neutral-black) !important;
+}
+
+.popover.bs-popover-bottom .popover-arrow::before {
+  border-bottom-color: var(--neutral-black) !important;
+}
+
+.popover.bs-popover-left .popover-arrow::before {
+  border-left-color: var(--neutral-black) !important;
+}
+
+.popover.bs-popover-right .popover-arrow::before {
+  border-right-color: var(--neutral-black) !important;
+}
+
+/* Info icon styling */
+.info-icon {
+  color: #a1a1aa;
   cursor: pointer;
   transition: color 0.2s;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  font-size: 18px;
 }
 
-.info-button:hover {
-  color: var(--neutral-white);
-}
-
-.info-popover {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 8px;
-  padding: 12px 16px;
-  width: max-content;
-  max-width: 300px;
-  color: var(--neutral-white);
-  font-size: 14px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  line-height: 1.5;
-}
-
-.info-popover-arrow {
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 12px;
-  height: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+.info-icon:hover {
+  color: #3b82f6;
 }

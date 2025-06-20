@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { BiCalendar } from 'react-icons/bi';
-import { FaAddressCard } from 'react-icons/fa';
+import { BiCalendar } from "react-icons/bi";
+import { FaAddressCard } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
-import { getInfoNotesTerminate } from '../api/terminate';
-import { getMember } from '../api/member';
+import { getInfoNotesTerminate } from "../api/terminate";
+import { getMember } from "../api/member";
 import { FaCircleInfo } from "react-icons/fa6";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { activateLeave, getInfoNotesActivate } from "../api/activate";
-import ConfirmModal from '../components/ConfirmModal';
-import SuccessModal from '../components/SuccessModal';
-import ErrorModal from '../components/ErrorModal';
-import InfoPopover from "../components/InfoPopover";
+import ConfirmModal from "../components/ConfirmModal";
+import SuccessModal from "../components/SuccessModal";
+import ErrorModal from "../components/ErrorModal";
+import BootstrapPopover from "../components/BootstrapPopover";
 
 const ActivateLeavePage = () => {
   const [form, setForm] = useState({
@@ -22,13 +22,13 @@ const ActivateLeavePage = () => {
   const [formattedDate, setFormattedDate] = useState("");
 
   const [dataMember, setDataMember] = useState({
-    namaMember: '',
-    periodeMember: '',
+    namaMember: "",
+    periodeMember: "",
   });
-  const [searchStatus, setSearchStatus] = useState('');
+  const [searchStatus, setSearchStatus] = useState("");
   const [infoNotes, setInfoNotes] = useState({
-    infoNotes: '',
-    nextCycleInfo: '',
+    infoNotes: "",
+    nextCycleInfo: "",
   });
   const [isLoading, setIsLoading] = useState({
     infoNotes: false,
@@ -42,14 +42,14 @@ const ActivateLeavePage = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
+  const [responseMessage, setResponseMessage] = useState("");
 
   // Function to format date
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return date.toLocaleDateString('id-ID', options);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString("id-ID", options);
   };
 
   const getInfoNotes = async () => {
@@ -58,21 +58,21 @@ const ActivateLeavePage = () => {
       const response = await getInfoNotesActivate();
       if (response?.status) {
         setInfoNotes({
-          infoNotes: response?.data?.infoNotes || 'Tidak ada informasi',
-          nextCycleInfo: response?.data?.nextCycleInfo || 'Tidak ada informasi',
+          infoNotes: response?.data?.infoNotes || "Tidak ada informasi",
+          nextCycleInfo: response?.data?.nextCycleInfo || "Tidak ada informasi",
         });
       } else {
-        console.error('Failed to fetch info notes:', response.status);
+        console.error("Failed to fetch info notes:", response.status);
         setInfoNotes({
-          infoNotes: 'Terjadi kesalahan saat mengambil informasi',
-          nextCycleInfo: 'Terjadi kesalahan saat mengambil informasi',
+          infoNotes: "Terjadi kesalahan saat mengambil informasi",
+          nextCycleInfo: "Terjadi kesalahan saat mengambil informasi",
         });
       }
     } catch (error) {
-      console.error('Error fetching info notes:', error);
+      console.error("Error fetching info notes:", error);
       setInfoNotes({
-        infoNotes: 'Terjadi kesalahan saat mengambil informasi',
-        nextCycleInfo: 'Terjadi kesalahan saat mengambil informasi',
+        infoNotes: "Terjadi kesalahan saat mengambil informasi",
+        nextCycleInfo: "Terjadi kesalahan saat mengambil informasi",
       });
     } finally {
       setIsLoading({ ...isLoading, infoNotes: false, nextCycleInfo: false });
@@ -88,14 +88,14 @@ const ActivateLeavePage = () => {
           namaMember: response?.data?.namaMember,
           periodeMember: response?.data?.periodeMember,
         });
-        setSearchStatus('found');
+        setSearchStatus("found");
       } else {
-        console.error('Failed to fetch member:', response.status);
-        setSearchStatus('notfound');
+        console.error("Failed to fetch member:", response.status);
+        setSearchStatus("notfound");
       }
     } catch (error) {
-      console.error('Error fetching member:', error);
-      setSearchStatus('notfound');
+      console.error("Error fetching member:", error);
+      setSearchStatus("notfound");
     } finally {
       setIsLoading({ ...isLoading, search: false });
     }
@@ -103,36 +103,36 @@ const ActivateLeavePage = () => {
 
   const validateField = (name, value) => {
     switch (name) {
-      case 'nomorKartu':
+      case "nomorKartu":
         if (!value.trim()) {
-          return 'Nomor kartu harus diisi';
+          return "Nomor kartu harus diisi";
         }
         if (value.length < 4) {
-          return 'Nomor kartu minimal 4 karakter';
+          return "Nomor kartu minimal 4 karakter";
         }
         if (value.length > 16) {
-          return 'Nomor kartu maksimal 16 karakter';
+          return "Nomor kartu maksimal 16 karakter";
         }
-        return '';
-      
-      case 'email':
+        return "";
+
+      case "email":
         if (!value.trim()) {
-          return 'Email harus diisi';
+          return "Email harus diisi";
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-          return 'Format email tidak valid';
+          return "Format email tidak valid";
         }
-        return '';
-      
-      case 'tanggalAktif':
+        return "";
+
+      case "tanggalAktif":
         if (!value) {
-          return 'Tanggal aktif harus diisi';
+          return "Tanggal aktif harus diisi";
         }
-        return '';
-      
+        return "";
+
       default:
-        return '';
+        return "";
     }
   };
 
@@ -144,40 +144,40 @@ const ActivateLeavePage = () => {
   };
 
   const handleChangeNoCard = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
+    const value = e.target.value.replace(/[^0-9]/g, "");
     setForm({ ...form, [e.target.name]: value });
-    
+
     if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' });
+      setErrors({ ...errors, [e.target.name]: "" });
     }
   };
 
   const handleChangeEmail = (e) => {
-    const value = e.target.value.replace(/[^a-zA-Z0-9@._-]/g, '');
+    const value = e.target.value.replace(/[^a-zA-Z0-9@._-]/g, "");
     setForm({ ...form, [e.target.name]: value });
-    
+
     if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' });
+      setErrors({ ...errors, [e.target.name]: "" });
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'tanggalAktif') {
+    if (name === "tanggalAktif") {
       setFormattedDate(formatDate(value));
       setForm({ ...form, [name]: formatDate(value) });
     } else {
       setForm({ ...form, [name]: value });
     }
-    
+
     if (errors[name]) {
-      setErrors({ ...errors, [name]: '' });
+      setErrors({ ...errors, [name]: "" });
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    Object.keys(form).forEach(key => {
+    Object.keys(form).forEach((key) => {
       const error = validateField(key, form[key]);
       if (error) {
         newErrors[key] = error;
@@ -192,13 +192,13 @@ const ActivateLeavePage = () => {
     setTouched({
       nomorKartu: true,
       email: true,
-      tanggalAktif: true
+      tanggalAktif: true,
     });
-    
+
     if (validateForm()) {
       setShowConfirmModal(true);
     } else {
-      console.log('Form has errors:', errors);
+      console.log("Form has errors:", errors);
     }
   };
 
@@ -207,20 +207,27 @@ const ActivateLeavePage = () => {
     setIsLoading({ ...isLoading, submit: true });
     try {
       const response = await activateLeave(form);
-      
+
       if (response?.status) {
-        setResponseMessage(response?.message || 'Pengajuan aktif saat cuti berhasil dikirim!');
+        setResponseMessage(
+          response?.message || "Pengajuan aktif saat cuti berhasil dikirim!"
+        );
         setShowSuccessModal(true);
-        console.log('Form is valid, submitting:', form);
+        console.log("Form is valid, submitting:", form);
       } else {
-        setResponseMessage(response?.message || 'Gagal mengirim pengajuan aktif saat cuti. Silakan coba lagi.');
+        setResponseMessage(
+          response?.message ||
+            "Gagal mengirim pengajuan aktif saat cuti. Silakan coba lagi."
+        );
         setShowErrorModal(true);
-        console.error('Failed to submit form:', response.status);
+        console.error("Failed to submit form:", response.status);
       }
     } catch (error) {
-      setResponseMessage('Terjadi kesalahan saat mengirim pengajuan. Silakan coba lagi.');
+      setResponseMessage(
+        "Terjadi kesalahan saat mengirim pengajuan. Silakan coba lagi."
+      );
       setShowErrorModal(true);
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     }
     setIsLoading({ ...isLoading, submit: false });
   };
@@ -233,15 +240,15 @@ const ActivateLeavePage = () => {
     setShowSuccessModal(false);
     // Reset form after successful submission
     setForm({
-      nomorKartu: '',
-      email: '',
-      tanggalAktif: '',
+      nomorKartu: "",
+      email: "",
+      tanggalAktif: "",
     });
     setDataMember({
-      namaMember: '',
-      periodeMember: '',
+      namaMember: "",
+      periodeMember: "",
     });
-    setSearchStatus('');
+    setSearchStatus("");
     setTouched({});
     setErrors({});
   };
@@ -252,19 +259,19 @@ const ActivateLeavePage = () => {
 
   useEffect(() => {
     // getInfoNotes(); //nyalain fungsi ini kalo udah ada apinya
-    console.log('Ini get info notes');
+    console.log("Ini get info notes");
   }, []);
 
   useEffect(() => {
     if (form?.nomorKartu && form?.email) {
       // getMember(); //nyalain fungsi ini kalo udah ada apinya
-      console.log('Ini get member');
+      console.log("Ini get member");
     } else {
       setDataMember({
-        namaMember: '',
-        periodeMember: '',
+        namaMember: "",
+        periodeMember: "",
       });
-      setSearchStatus('');
+      setSearchStatus("");
     }
   }, [form?.nomorKartu, form?.email]);
 
@@ -280,18 +287,20 @@ const ActivateLeavePage = () => {
           <div className="activate-form-section">
             <div className="activate-form-row">
               <div className="activate-form-group">
-                <div className="d-flex justify-content-start align-items-start">
+                <div className="d-flex justify-content-start align-items-center">
                   <label>Nomor Kartu</label>
-                  <InfoPopover 
-                    content="Masukkan nomor kartu member yang tertera pada kartu membership Anda. Nomor kartu biasanya terdiri dari 4-16 digit angka."
+                  <BootstrapPopover
+                    content="Nomor kartu dapat kamu lihat di <strong>pojok kiri atas</strong> (di bawah nama) pada <strong>aplikasi FTL Stride</strong>, atau di <strong>bagian belakang kartu fisik member</strong>"
                     placement="top"
                     className="ms-2"
                   >
                     <IoMdInformationCircleOutline />
-                  </InfoPopover>
+                  </BootstrapPopover>
                 </div>
                 <div className="activate-input-icon">
-                  <span><FaAddressCard/></span>
+                  <span>
+                    <FaAddressCard />
+                  </span>
                   <input
                     type="text"
                     name="nomorKartu"
@@ -299,7 +308,9 @@ const ActivateLeavePage = () => {
                     onChange={handleChangeNoCard}
                     onBlur={handleBlur}
                     placeholder="Masukan Nomor Kartu"
-                    className={touched?.nomorKartu && errors?.nomorKartu ? 'error' : ''}
+                    className={
+                      touched?.nomorKartu && errors?.nomorKartu ? "error" : ""
+                    }
                   />
                 </div>
                 {touched?.nomorKartu && errors?.nomorKartu && (
@@ -307,9 +318,13 @@ const ActivateLeavePage = () => {
                 )}
               </div>
               <div className="activate-form-group">
-                <label>Email Member</label>
+                <div className="d-flex justify-content-start align-items-start">
+                  <label>Email Member</label>
+                </div>
                 <div className="activate-input-icon">
-                  <span><MdAlternateEmail /></span>
+                  <span>
+                    <MdAlternateEmail />
+                  </span>
                   <input
                     type="email"
                     name="email"
@@ -317,7 +332,7 @@ const ActivateLeavePage = () => {
                     onChange={handleChangeEmail}
                     onBlur={handleBlur}
                     placeholder="Masukan Email Member"
-                    className={touched?.email && errors?.email ? 'error' : ''}
+                    className={touched?.email && errors?.email ? "error" : ""}
                   />
                 </div>
                 {touched?.email && errors?.email && (
@@ -325,11 +340,13 @@ const ActivateLeavePage = () => {
                 )}
               </div>
             </div>
-            {searchStatus === 'found' ? (
-            <div className="display-member-box">
-              <div className="nama-member-box">{dataMember?.namaMember}</div>
-              <div className="periode-member-box">{dataMember?.periodeMember}</div>
-            </div>
+            {searchStatus === "found" ? (
+              <div className="display-member-box">
+                <div className="nama-member-box">{dataMember?.namaMember}</div>
+                <div className="periode-member-box">
+                  {dataMember?.periodeMember}
+                </div>
+              </div>
             ) : (
               <div className="display-member-box">
                 <div className="nama-member-box">Nama Member</div>
@@ -338,8 +355,8 @@ const ActivateLeavePage = () => {
             )}
             <div className="activate-form-group">
               <label>Tanggal Aktif Kembali</label>
-              <div className="activate-input-icon">
-                <span><BiCalendar/></span>
+              <div className="activate-input-icon-date">
+                {/* <span><BiCalendar /></span> */}
                 <input
                   type="date"
                   name="tanggalAktif"
@@ -347,13 +364,13 @@ const ActivateLeavePage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   placeholder="Masukan Tanggal Aktif Kembali"
-                  className={touched?.tanggalAktif && errors?.tanggalAktif ? 'error' : ''}
+                  className={
+                    touched?.tanggalAktif && errors?.tanggalAktif ? "error" : ""
+                  }
                 />
               </div>
               {formattedDate && (
-                <div className="formatted-date">
-                  {formattedDate}
-                </div>
+                <div className="formatted-date">{formattedDate}</div>
               )}
               {touched?.tanggalAktif && errors?.tanggalAktif && (
                 <div className="error-message">{errors?.tanggalAktif}</div>
@@ -363,13 +380,15 @@ const ActivateLeavePage = () => {
               <div className="activate-info-block">
                 <div className="activate-info-title">Next Cycle Info</div>
                 <div className="activate-info-box">
-                  <span><IoMdInformationCircleOutline /></span>
+                  <span>
+                    <IoMdInformationCircleOutline />
+                  </span>
                   {isLoading?.nextCycleInfo ? (
                     <span>Loading...</span>
                   ) : (
-                    <span 
-                      dangerouslySetInnerHTML={{ 
-                        __html: infoNotes?.nextCycleInfo 
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: infoNotes?.nextCycleInfo,
                       }}
                     />
                   )}
@@ -378,21 +397,27 @@ const ActivateLeavePage = () => {
               <div className="activate-info-block">
                 <div className="activate-info-title">Informational Notes</div>
                 <div className="activate-info-box">
-                  <span><IoMdInformationCircleOutline /></span>
+                  <span>
+                    <IoMdInformationCircleOutline />
+                  </span>
                   {isLoading?.infoNotes ? (
                     <span>Loading...</span>
                   ) : (
-                    <span 
-                      dangerouslySetInnerHTML={{ 
-                        __html: infoNotes?.infoNotes 
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: infoNotes?.infoNotes,
                       }}
                     />
                   )}
                 </div>
               </div>
             </div>
-            <button disabled={isLoading?.submit} type="submit" className="activate-submit-btn">
-              {isLoading?.submit ? 'Loading...' : 'Submit'}
+            <button
+              disabled={isLoading?.submit}
+              type="submit"
+              className="activate-submit-btn"
+            >
+              {isLoading?.submit ? "Loading..." : "Submit"}
             </button>
           </div>
         </form>
@@ -407,10 +432,18 @@ const ActivateLeavePage = () => {
           isLoading={isLoading?.submit}
         >
           <div className="modal-info">
-            <div><strong>Nomor Kartu:</strong> {form?.nomorKartu}</div>
-            <div><strong>Email:</strong> {form?.email}</div>
-            <div><strong>Nama Member:</strong> {dataMember?.namaMember}</div>
-            <div><strong>Tanggal Aktif Kembali:</strong> {form?.tanggalAktif}</div>
+            <div>
+              <strong>Nomor Kartu:</strong> {form?.nomorKartu}
+            </div>
+            <div>
+              <strong>Email:</strong> {form?.email}
+            </div>
+            <div>
+              <strong>Nama Member:</strong> {dataMember?.namaMember}
+            </div>
+            <div>
+              <strong>Tanggal Aktif Kembali:</strong> {form?.tanggalAktif}
+            </div>
           </div>
         </ConfirmModal>
 

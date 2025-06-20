@@ -10,6 +10,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import SuccessModal from '../components/SuccessModal';
 import ErrorModal from '../components/ErrorModal';
 import { IoMdInformationCircleOutline } from 'react-icons/io';
+import BootstrapPopover from '../components/BootstrapPopover';
 
 const TerminateRequestPage = () => {
   const [form, setForm] = useState({
@@ -31,7 +32,7 @@ const TerminateRequestPage = () => {
     infoNotes: false,
     submit: false,
     file: false,
-    search: false,
+    search: false, 
   });
 
   const [errors, setErrors] = useState({});
@@ -40,6 +41,14 @@ const TerminateRequestPage = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
+  const [formattedDate, setFormattedDate] = useState('');
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString("id-ID", options);
+  };
 
   const getInfoNotes = async () => {
     setIsLoading({ ...isLoading, infoNotes: true });
@@ -156,12 +165,10 @@ const TerminateRequestPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
     if (name === 'tanggalAktif') {
       setFormattedDate(formatDate(value));
-      setForm({ ...form, [name]: formatDate(value) });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    } 
     
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
@@ -341,7 +348,16 @@ const TerminateRequestPage = () => {
           <div className="activate-form-section">
             <div className="activate-form-row">
               <div className="activate-form-group">
+              <div className="d-flex justify-content-start align-items-center">
                 <label>Nomor Kartu</label>
+                  <BootstrapPopover
+                    content="Nomor kartu dapat kamu lihat di <strong>pojok kiri atas</strong> (di bawah nama) pada <strong>aplikasi FTL Stride</strong>, atau di <strong>bagian belakang kartu fisik member</strong>"
+                    placement="top"
+                    className="ms-2"
+                  >
+                    <IoMdInformationCircleOutline />
+                  </BootstrapPopover>
+                </div>
                 <div className="activate-input-icon">
                   <span><FaAddressCard/></span>
                   <input
@@ -390,8 +406,7 @@ const TerminateRequestPage = () => {
             )}
             <div className="activate-form-group">
               <label>Tanggal Terminate (Efektif 30 hari dari hari ini)</label>
-              <div className="activate-input-icon">
-                <span><BiCalendar/></span>
+              <div className="activate-input-icon-date">
                 <input
                   type="date"
                   name="tanggalAktif"
@@ -402,6 +417,9 @@ const TerminateRequestPage = () => {
                   className={touched?.tanggalAktif && errors?.tanggalAktif ? 'error' : ''}
                 />
               </div>
+              {formattedDate && (
+                <div className="formatted-date">{formattedDate}</div>
+              )}
               {touched?.tanggalAktif && errors?.tanggalAktif && (
                 <div className="error-message">{errors?.tanggalAktif}</div>
               )}
